@@ -12,15 +12,13 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    // Initialize from localStorage in useState initializer (runs only once)
-    const [theme, setTheme] = useState<Theme>(() => {
-        if (typeof window === 'undefined') return 'dark';
+    // Always use dark mode
+    const [theme, setTheme] = useState<Theme>('dark');
 
-        const stored = localStorage.getItem('theme') as Theme;
-        if (stored) return stored;
-
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    });
+    // Set dark mode on mount
+    useEffect(() => {
+        document.documentElement.classList.add('dark');
+    }, []);
 
     // Only sync to localStorage and DOM, don't call setState
     useEffect(() => {

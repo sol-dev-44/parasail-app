@@ -21,7 +21,6 @@ export interface BarSpec {
     name: string;
     displayName: string;
     strapPositions: string[]; // All available strap positions (letters)
-    positionColors: { [key: string]: string }; // Color for each strap position
     doublesSetup: BarPosition[];
     triplesSetup?: BarPosition[];
     imagePath: string;
@@ -33,19 +32,11 @@ export const BAR_DATA: BarSpec[] = [
         name: 'Doubleizer',
         displayName: 'Doubleizer',
         strapPositions: ['A', 'B', 'C', 'D', 'E', 'F'],
-        positionColors: {
-            'A': '#22c55e', // green
-            'B': '#3b82f6', // blue
-            'C': '#22c55e', // green
-            'D': '#3b82f6', // blue
-            'E': '#ef4444', // red
-            'F': '#ef4444', // red
-        },
         doublesSetup: [
             { position: 0, minDiff: 0, maxDiff: 11, heavyStraps: { leftStrap: 'A', rightStrap: 'C' }, lightStraps: { leftStrap: 'F', rightStrap: 'E' } },
             { position: 1, minDiff: 12, maxDiff: 40, heavyStraps: { leftStrap: 'B', rightStrap: 'D' }, lightStraps: { leftStrap: 'F', rightStrap: 'D' } },
             { position: 2, minDiff: 41, maxDiff: 60, heavyStraps: { leftStrap: 'B', rightStrap: 'D' }, lightStraps: { leftStrap: 'F', rightStrap: 'E' } },
-            { position: 3, minDiff: 61, maxDiff: 110, heavyStraps: { leftStrap: 'B', rightStrap: 'E' }, lightStraps: { leftStrap: 'F', rightStrap: 'E' } },
+            { position: 3, minDiff: 61, maxDiff: 110, heavyStraps: { leftStrap: 'B', rightStrap: 'E' }, lightStraps: { leftStrap: 'E', rightStrap: 'F' } },
         ],
         imagePath: '/bar-images/doubleizer.png',
     },
@@ -54,12 +45,6 @@ export const BAR_DATA: BarSpec[] = [
         name: 'Doubleizer SP',
         displayName: 'Doubleizer SP',
         strapPositions: ['A', 'B', 'C', 'D'],
-        positionColors: {
-            'A': '#22c55e', // green
-            'B': '#22c55e', // green
-            'C': '#ef4444', // red
-            'D': '#ef4444', // red
-        },
         doublesSetup: [
             { position: 0, minDiff: 0, maxDiff: 10, heavyStraps: { leftStrap: 'A', rightStrap: 'B' }, lightStraps: { leftStrap: 'C', rightStrap: 'D' } },
             { position: 1, minDiff: 11, maxDiff: 35, heavyStraps: { leftStrap: 'A', rightStrap: 'B' }, lightStraps: { leftStrap: 'C', rightStrap: 'D' } },
@@ -75,14 +60,6 @@ export const BAR_DATA: BarSpec[] = [
         name: 'Multiflyer',
         displayName: 'Multiflyer',
         strapPositions: ['A', 'B', 'C', 'D', 'E', 'F'],
-        positionColors: {
-            'A': '#000000', // black
-            'B': '#000000', // black
-            'C': '#ef4444', // red
-            'D': '#ef4444', // red
-            'E': '#000000', // black
-            'F': '#000000', // black
-        },
         doublesSetup: [
             { position: 0, minDiff: 0, maxDiff: 7, heavyStraps: { leftStrap: 'A', rightStrap: 'C' }, lightStraps: { leftStrap: 'D', rightStrap: 'F' } },
             { position: 1, minDiff: 8, maxDiff: 22, heavyStraps: { leftStrap: 'A', rightStrap: 'C' }, lightStraps: { leftStrap: 'D', rightStrap: 'F' } },
@@ -112,14 +89,6 @@ export const BAR_DATA: BarSpec[] = [
         name: 'Multiflyer ADV',
         displayName: 'Multiflyer ADV',
         strapPositions: ['A', 'B', 'C', 'D', 'E', 'F'],
-        positionColors: {
-            'A': '#22c55e', // green
-            'B': '#22c55e', // green
-            'C': '#3b82f6', // blue
-            'D': '#3b82f6', // blue
-            'E': '#ef4444', // red
-            'F': '#ef4444', // red
-        },
         doublesSetup: [
             { position: 0, minDiff: 0, maxDiff: 10, heavyStraps: { leftStrap: 'A', rightStrap: 'C' }, lightStraps: { leftStrap: 'D', rightStrap: 'F' } },
             { position: 1, minDiff: 11, maxDiff: 30, heavyStraps: { leftStrap: 'A', rightStrap: 'C' }, lightStraps: { leftStrap: 'D', rightStrap: 'F' } },

@@ -10,6 +10,13 @@ interface BarSetupDisplayProps {
     isMetric: boolean;
 }
 
+// Define colors for each passenger role
+const PASSENGER_COLORS = {
+    heavy: '#22c55e', // green
+    middle: '#a855f7', // purple
+    light: '#3b82f6', // blue
+};
+
 export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProps) {
     const { barSpec, assignments, weightDifference, fulcrumPosition } = setup;
 
@@ -58,6 +65,21 @@ export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProp
         strapUsage.get(rightStrap)!.push(assignment.passengerIndex);
     });
 
+    // Create a map of strap position to color based on passenger role
+    const strapColors = new Map<string, string[]>();
+    assignments.forEach(assignment => {
+        const color = PASSENGER_COLORS[assignment.role];
+
+        [assignment.straps.leftStrap, assignment.straps.rightStrap].forEach(strap => {
+            if (!strapColors.has(strap)) {
+                strapColors.set(strap, []);
+            }
+            if (!strapColors.get(strap)!.includes(color)) {
+                strapColors.get(strap)!.push(color);
+            }
+        });
+    });
+
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -101,9 +123,9 @@ export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProp
                 </div>
                 <div className="flex justify-center items-center gap-2 flex-wrap">
                     {barSpec.strapPositions.map((strap) => {
-                        const usedBy = strapUsage.get(strap) || [];
-                        const isActive = usedBy.length > 0;
-                        const isShared = usedBy.length > 1;
+                        const colors = strapColors.get(strap) || [];
+                        const isActive = colors.length > 0;
+                        const isShared = colors.length > 1;
 
                         return (
                             <div
@@ -123,7 +145,7 @@ export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProp
                                             <div
                                                 className="absolute inset-0"
                                                 style={{
-                                                    background: `linear-gradient(to right, ${barSpec.positionColors[assignments[usedBy[0]].straps.leftStrap] || '#6b7280'} 50%, ${barSpec.positionColors[assignments[usedBy[1]].straps.leftStrap] || '#6b7280'} 50%)`
+                                                    background: `linear-gradient(to right, ${colors[0]} 50%, ${colors[1]} 50%)`
                                                 }}
                                             />
                                             <span className="relative z-10">{strap}</span>
@@ -134,9 +156,7 @@ export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProp
                                             <div
                                                 className="absolute inset-0"
                                                 style={{
-                                                    backgroundColor: isActive
-                                                        ? (barSpec.positionColors[strap] || '#6b7280')
-                                                        : '#374151'
+                                                    backgroundColor: isActive ? colors[0] : '#374151'
                                                 }}
                                             />
                                             <span className="relative z-10">{strap}</span>
@@ -155,8 +175,7 @@ export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProp
                     Passenger Assignments
                 </div>
                 {sortedAssignments.map((assignment) => {
-                    // Get the color from the left strap position
-                    const strapColor = barSpec.positionColors[assignment.straps.leftStrap] || '#f97316';
+                    const passengerColor = PASSENGER_COLORS[assignment.role];
 
                     return (
                         <motion.div
@@ -168,9 +187,9 @@ export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProp
                             <div className="flex items-center gap-3 mb-3">
                                 <div
                                     className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                                    style={{ backgroundColor: strapColor }}
+                                    style={{ backgroundColor: passengerColor }}
                                 >
-                                    {assignment.passengerIndex + 1}
+                                    <span className="relative z-10">{assignment.passengerIndex + 1}</span>
                                 </div>
                                 <div>
                                     <div className={`text-sm font-semibold ${getRoleColor(assignment.role)}`}>
@@ -182,16 +201,22 @@ export default function BarSetupDisplay({ setup, isMetric }: BarSetupDisplayProp
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-2">
-                                <div className="p-2 rounded bg-bg-primary">
-                                    <div className="text-xs text-text-secondary">Left Strap</div>
-                                    <div className="text-lg font-bold text-text-primary">
-                                        {assignment.straps.leftStrap}
+                                <div className="p-2 rounded bg-bg-primary flex items-center gap-2">
+                                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: passengerColor }} />
+                                    <div className="flex-1">
+                                        <div className="text-xs text-text-secondary">Left Strap</div>
+                                        <div className="text-lg font-bold text-text-primary">
+                                            {assignment.straps.leftStrap}
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="p-2 rounded bg-bg-primary">
-                                    <div className="text-xs text-text-secondary">Right Strap</div>
-                                    <div className="text-lg font-bold text-text-primary">
-                                        {assignment.straps.rightStrap}
+                                <div className="p-2 rounded bg-bg-primary flex items-center gap-2">
+                                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: passengerColor }} />
+                                    <div className="flex-1">
+                                        <div className="text-xs text-text-secondary">Right Strap</div>
+                                        <div className="text-lg font-bold text-text-primary">
+                                            {assignment.straps.rightStrap}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

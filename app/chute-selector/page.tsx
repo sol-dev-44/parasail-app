@@ -209,9 +209,23 @@ export default function ChuteSelector() {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                         >
-                            <h2 className="text-2xl font-bold text-text-primary mb-6">
+                            <h2 className="text-2xl font-bold text-text-primary mb-2">
                                 Chute Recommendations
                             </h2>
+
+                            {/* Filter Status Message */}
+                            <div className="mb-6 text-sm">
+                                {selectedChutes.length === 0 ? (
+                                    <p className="text-text-secondary">
+                                        💡 <span className="italic">Tip: Use the "My Chutes" filter on the left to show only chutes you own</span>
+                                    </p>
+                                ) : (
+                                    <p className="text-accent-cyan">
+                                        Showing results from {selectedChutes.length} selected chute{selectedChutes.length !== 1 ? 's' : ''}.
+                                        {recommendations.length === 0 && ' Select more chutes to see additional options.'}
+                                    </p>
+                                )}
+                            </div>
 
                             {recommendations.length === 0 ? (
                                 <motion.div
